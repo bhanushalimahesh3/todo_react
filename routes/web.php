@@ -12,5 +12,9 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('todo');
 });
+
+Route::get('/todos', 'TodoController@index');
+Route::post('/todos', 'TodoController@create');
+Route::delete('/todos/{id}', 'TodoController@destroy');
