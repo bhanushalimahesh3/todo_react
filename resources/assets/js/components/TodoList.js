@@ -1,19 +1,29 @@
 import React, {Component} from 'react';
 
 let TableBody = function(props) {
-	return (
-			<React.Fragment>
-			{props.todoList.map(todo => (
-					<tr key={todo.id}>
-						<td>{todo.id}</td>
-						<td>{todo.name}</td>
-						<td><button type="button" onClick={(e) => props.handleDelete(todo.id)}>Delete</button></td>
-					</tr>
+	if(props.todoList.length > 0){
+		return (
+				<React.Fragment>
+				{props.todoList.map(todo => (
+						<tr key={todo.id}>
+							<td>{todo.id}</td>
+							<td>{todo.name}</td>
+							<td><button type="button" onClick={(e) => props.handleDelete(todo.id)}>Delete</button> <button type="button" >Edit</button></td>
+						</tr>
+						)
 					)
-				)
-			}
-			</React.Fragment>
-			);
+				}
+				</React.Fragment>
+				);
+	}else{
+		return (
+				<React.Fragment>
+					<tr>
+						<td colsSpan="3">Loading...</td>
+					</tr>
+				</React.Fragment>
+				);
+	}				
 }
 
 class TodoList extends Component 
