@@ -26890,6 +26890,7 @@ function (_Component) {
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
     _this.handleDelete = _this.handleDelete.bind(_assertThisInitialized(_this));
+    _this.handleEditForm = _this.handleEditForm.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -26910,6 +26911,17 @@ function (_Component) {
     value: function handleChange(event) {
       this.setState({
         value: event.target.value
+      });
+    }
+  }, {
+    key: "handleEditForm",
+    value: function handleEditForm(todo) {
+      this.setState({
+        todoList: _.map(this.state.todoList, function (value) {
+          if (value.id == todo.id) {}
+
+          return value;
+        })
       });
     }
   }, {
@@ -26994,7 +27006,8 @@ function (_Component) {
         className: "col-md-12"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_TodoList__WEBPACK_IMPORTED_MODULE_3__["default"], {
         todoList: this.state.todoList,
-        handleDelete: this.handleDelete
+        handleDelete: this.handleDelete,
+        handleEditForm: this.handleEditForm
       }))));
     }
   }]);
@@ -27248,15 +27261,18 @@ var TableBody = function TableBody(props) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, todo.id), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, todo.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         type: "button",
         onClick: function onClick(e) {
+          return props.handleEditForm(todo);
+        }
+      }, "Edit"), "  ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "button",
+        onClick: function onClick(e) {
           return props.handleDelete(todo.id);
         }
-      }, "Delete"), " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        type: "button"
-      }, "Edit")));
+      }, "Delete")));
     }));
   } else {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", {
-      colsSpan: "3"
+      colSpan: "3"
     }, "Loading...")));
   }
 };
@@ -27275,12 +27291,12 @@ function (_Component) {
   _createClass(TodoList, [{
     key: "render",
     value: function render() {
-      console.log(this.props);
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
         className: "table"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Id"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Todo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Action"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(TableBody, {
         todoList: this.props.todoList,
-        handleDelete: this.props.handleDelete
+        handleDelete: this.props.handleDelete,
+        handleEditForm: this.props.handleEditForm
       })));
     }
   }]);

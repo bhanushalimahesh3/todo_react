@@ -8,7 +8,7 @@ let TableBody = function(props) {
 						<tr key={todo.id}>
 							<td>{todo.id}</td>
 							<td>{todo.name}</td>
-							<td><button type="button" onClick={(e) => props.handleDelete(todo.id)}>Delete</button> <button type="button" >Edit</button></td>
+							<td><button type="button" onClick={(e) => props.handleEditForm(todo)} >Edit</button>  <button type="button" onClick={(e) => props.handleDelete(todo.id)}>Delete</button></td>
 						</tr>
 						)
 					)
@@ -19,7 +19,7 @@ let TableBody = function(props) {
 		return (
 				<React.Fragment>
 					<tr>
-						<td colsSpan="3">Loading...</td>
+						<td colSpan="3">Loading...</td>
 					</tr>
 				</React.Fragment>
 				);
@@ -33,7 +33,7 @@ class TodoList extends Component
 	}
 
 	render() {
-		console.log(this.props);
+
 		return (
 			<table className="table">
 			    <thead>
@@ -44,7 +44,7 @@ class TodoList extends Component
 			      </tr>
 			    </thead>
 			    <tbody>
-			    	<TableBody todoList={this.props.todoList} handleDelete={this.props.handleDelete}/> 
+			    	<TableBody todoList={this.props.todoList} handleDelete={this.props.handleDelete} handleEditForm={this.props.handleEditForm} /> 
 			   </tbody>
 			  </table>
 			  );
