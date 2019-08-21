@@ -26890,7 +26890,7 @@ function (_Component) {
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
     _this.handleDelete = _this.handleDelete.bind(_assertThisInitialized(_this));
-    _this.handleEditForm = _this.handleEditForm.bind(_assertThisInitialized(_this));
+    _this.handleUpdateForm = _this.handleUpdateForm.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -26914,26 +26914,34 @@ function (_Component) {
       });
     }
   }, {
-    key: "handleEditForm",
-    value: function handleEditForm(todo) {
-      this.setState({
-        todoList: _.map(this.state.todoList, function (value) {
-          if (value.id == todo.id) {}
+    key: "handleUpdateForm",
+    value: function handleUpdateForm(id, todo) {
+      var _this2 = this;
 
-          return value;
-        })
+      var url = "".concat(baseUrl, "/todos/").concat(id);
+      axios__WEBPACK_IMPORTED_MODULE_4___default.a.put(url, {
+        todo: todo
+      }).then(function (response) {
+        return response.data;
+      }).then(function (data) {
+        alert(data.message);
+
+        if (data.status === 's') {
+          //this.setState({ value: '' });
+          _this2.getTodoList();
+        }
       });
     }
   }, {
     key: "getTodoList",
     value: function getTodoList() {
-      var _this2 = this;
+      var _this3 = this;
 
       var url = "".concat(baseUrl, "/todos");
       axios__WEBPACK_IMPORTED_MODULE_4___default.a.get(url).then(function (response) {
         return response.data;
       }).then(function (data) {
-        _this2.setState({
+        _this3.setState({
           todoList: data.data
         });
       });
@@ -26941,7 +26949,7 @@ function (_Component) {
   }, {
     key: "addTodo",
     value: function addTodo(todo) {
-      var _this3 = this;
+      var _this4 = this;
 
       var url = "".concat(baseUrl, "/todos");
       axios__WEBPACK_IMPORTED_MODULE_4___default.a.post(url, {
@@ -26952,18 +26960,18 @@ function (_Component) {
         alert(data.message);
 
         if (data.status === 's') {
-          _this3.setState({
+          _this4.setState({
             value: ''
           });
 
-          _this3.getTodoList();
+          _this4.getTodoList();
         }
       });
     }
   }, {
     key: "deleteTodo",
     value: function deleteTodo(todoId) {
-      var _this4 = this;
+      var _this5 = this;
 
       var url = "".concat(baseUrl, "/todos/").concat(todoId);
       axios__WEBPACK_IMPORTED_MODULE_4___default.a["delete"](url).then(function (response) {
@@ -26972,11 +26980,11 @@ function (_Component) {
         alert(data.message);
 
         if (data.status === 's') {
-          _this4.setState({
+          _this5.setState({
             value: ''
           });
 
-          _this4.getTodoList();
+          _this5.getTodoList();
         }
       });
     }
@@ -27007,7 +27015,7 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_TodoList__WEBPACK_IMPORTED_MODULE_3__["default"], {
         todoList: this.state.todoList,
         handleDelete: this.handleDelete,
-        handleEditForm: this.handleEditForm
+        handleUpdateForm: this.handleUpdateForm
       }))));
     }
   }]);
@@ -27166,6 +27174,7 @@ function (_Component) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _TodoListItems__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TodoListItems */ "./resources/assets/js/components/TodoListItems.js");
 function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
 
 function _typeof(obj) {
@@ -27253,29 +27262,6 @@ function _setPrototypeOf(o, p) {
 
 
 
-var TableBody = function TableBody(props) {
-  if (props.todoList.length > 0) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, props.todoList.map(function (todo) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
-        key: todo.id
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, todo.id), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, todo.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        type: "button",
-        onClick: function onClick(e) {
-          return props.handleEditForm(todo);
-        }
-      }, "Edit"), "  ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        type: "button",
-        onClick: function onClick(e) {
-          return props.handleDelete(todo.id);
-        }
-      }, "Delete")));
-    }));
-  } else {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", {
-      colSpan: "3"
-    }, "Loading...")));
-  }
-};
 
 var TodoList =
 /*#__PURE__*/
@@ -27291,20 +27277,208 @@ function (_Component) {
   _createClass(TodoList, [{
     key: "render",
     value: function render() {
+      var _this = this;
+
+      var Items = this.props.todoList.length > 0 ? this.props.todoList.map(function (todo, i) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_TodoListItems__WEBPACK_IMPORTED_MODULE_1__["default"], {
+          key: todo.id,
+          todo: todo,
+          handleUpdateForm: _this.props.handleUpdateForm,
+          handleDelete: _this.props.handleDelete
+        });
+      }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Loading, null);
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
         className: "table"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Id"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Todo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Action"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(TableBody, {
-        todoList: this.props.todoList,
-        handleDelete: this.props.handleDelete,
-        handleEditForm: this.props.handleEditForm
-      })));
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Id"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Todo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Action"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, Items));
     }
   }]);
 
   return TodoList;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
+function Loading() {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Loading..."));
+}
+
 /* harmony default export */ __webpack_exports__["default"] = (TodoList);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/TodoListItems.js":
+/*!*********************************************************!*\
+  !*** ./resources/assets/js/components/TodoListItems.js ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
+
+function _typeof(obj) {
+  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
+    _typeof = function _typeof(obj) {
+      return _typeof2(obj);
+    };
+  } else {
+    _typeof = function _typeof(obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
+    };
+  }
+
+  return _typeof(obj);
+}
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+function _possibleConstructorReturn(self, call) {
+  if (call && (_typeof(call) === "object" || typeof call === "function")) {
+    return call;
+  }
+
+  return _assertThisInitialized(self);
+}
+
+function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+    return o.__proto__ || Object.getPrototypeOf(o);
+  };
+  return _getPrototypeOf(o);
+}
+
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return self;
+}
+
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) _setPrototypeOf(subClass, superClass);
+}
+
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+
+  return _setPrototypeOf(o, p);
+}
+
+
+
+var TodoListItems =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(TodoListItems, _React$Component);
+
+  function TodoListItems(props) {
+    var _this;
+
+    _classCallCheck(this, TodoListItems);
+
+    console.log('yeah');
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(TodoListItems).call(this, props));
+    _this.state = {
+      isEditMode: false
+    };
+    _this.handleEdit = _this.handleEdit.bind(_assertThisInitialized(_this));
+    _this.handleSave = _this.handleSave.bind(_assertThisInitialized(_this));
+    _this.handleCancel = _this.handleCancel.bind(_assertThisInitialized(_this));
+    console.log(props);
+    return _this;
+  }
+
+  _createClass(TodoListItems, [{
+    key: "handleEdit",
+    value: function handleEdit() {
+      this.setState({
+        isEditMode: true
+      });
+    }
+  }, {
+    key: "handleCancel",
+    value: function handleCancel() {
+      this.setState({
+        isEditMode: false
+      });
+    }
+  }, {
+    key: "handleSave",
+    value: function handleSave() {
+      this.props.handleUpdateForm(this.props.todo.id, this.refs.editInput.value);
+      this.handleCancel();
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      if (this.state.isEditMode) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, this.props.todo.id), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+          type: "text",
+          defaultValue: this.props.todo.name,
+          ref: "editInput"
+        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          type: "button",
+          onClick: this.handleSave
+        }, "Save"), "  ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          type: "button",
+          onClick: this.handleCancel
+        }, "Cancel")));
+      } else {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, this.props.todo.id), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, this.props.todo.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          type: "button",
+          onClick: this.handleEdit
+        }, "Edit"), "  ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          type: "button",
+          onClick: function onClick() {
+            return _this2.props.handleDelete(_this2.props.todo.id);
+          }
+        }, "Delete")));
+      }
+    }
+  }]);
+
+  return TodoListItems;
+}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["default"] = (TodoListItems);
 
 /***/ }),
 

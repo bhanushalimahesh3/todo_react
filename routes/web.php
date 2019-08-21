@@ -17,4 +17,5 @@ Route::get('/', function () {
 
 Route::get('/todos', 'TodoController@index');
 Route::post('/todos', 'TodoController@create');
+Route::put('/todos/{id}', 'TodoController@update');
 Route::delete('/todos/{id}', 'TodoController@destroy');

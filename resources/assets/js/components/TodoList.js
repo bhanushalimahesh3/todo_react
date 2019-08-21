@@ -1,30 +1,5 @@
 import React, {Component} from 'react';
-
-let TableBody = function(props) {
-	if(props.todoList.length > 0){
-		return (
-				<React.Fragment>
-				{props.todoList.map(todo => (
-						<tr key={todo.id}>
-							<td>{todo.id}</td>
-							<td>{todo.name}</td>
-							<td><button type="button" onClick={(e) => props.handleEditForm(todo)} >Edit</button>  <button type="button" onClick={(e) => props.handleDelete(todo.id)}>Delete</button></td>
-						</tr>
-						)
-					)
-				}
-				</React.Fragment>
-				);
-	}else{
-		return (
-				<React.Fragment>
-					<tr>
-						<td colSpan="3">Loading...</td>
-					</tr>
-				</React.Fragment>
-				);
-	}				
-}
+import TodoListItems from './TodoListItems';
 
 class TodoList extends Component 
 {
@@ -34,6 +9,10 @@ class TodoList extends Component
 
 	render() {
 
+		const Items = (this.props.todoList.length > 0) ? this.props.todoList.map( (todo, i) => {
+		    
+		     return (<TodoListItems key={todo.id} todo={todo} handleUpdateForm={this.props.handleUpdateForm} handleDelete={this.props.handleDelete}/>)
+		    }) : <Loading />;
 		return (
 			<table className="table">
 			    <thead>
@@ -44,11 +23,15 @@ class TodoList extends Component
 			      </tr>
 			    </thead>
 			    <tbody>
-			    	<TableBody todoList={this.props.todoList} handleDelete={this.props.handleDelete} handleEditForm={this.props.handleEditForm} /> 
+			    	{Items}
 			   </tbody>
 			  </table>
 			  );
 	}
+}
+
+function Loading() {
+	return (<tr><td>Loading...</td></tr>)
 }
 
 

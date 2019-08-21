@@ -15,7 +15,7 @@ class Todo extends Component {
 	    this.handleChange = this.handleChange.bind(this);
 	    this.handleSubmit = this.handleSubmit.bind(this);
 	    this.handleDelete = this.handleDelete.bind(this);
-	    this.handleEditForm = this.handleEditForm.bind(this);
+	    this.handleUpdateForm = this.handleUpdateForm.bind(this);
 	}
 
 	handleSubmit(event) {
@@ -34,14 +34,17 @@ class Todo extends Component {
 	  this.setState({value: event.target.value});
 	}
 
-	handleEditForm(todo) {
+	handleUpdateForm(id, todo) {
 		
-		this.setState({todoList: _.map(this.state.todoList, function(value){
-			if(value.id == todo.id) {
-				
-			}
-			return value;
-		})});
+		const url = `${baseUrl}/todos/${id}`;
+				axios.put(url, {todo:todo}).then(response => response.data)
+				.then((data) => {
+					alert(data.message);
+					if(data.status === 's') {
+				  		//this.setState({ value: '' });
+				  		this.getTodoList();				
+					}		  
+				 })
 	}
 
 
@@ -93,7 +96,7 @@ class Todo extends Component {
 				</div>
 				<div className="row mt-2">
 					<div className="col-md-12">
-						<TodoList todoList={this.state.todoList} handleDelete={this.handleDelete} handleEditForm={this.handleEditForm} />						
+						<TodoList todoList={this.state.todoList} handleDelete={this.handleDelete} handleUpdateForm={this.handleUpdateForm}/>						
 					</div>
 				</div>
 			</div>		

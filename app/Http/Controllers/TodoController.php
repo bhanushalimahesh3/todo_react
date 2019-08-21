@@ -82,7 +82,13 @@ class TodoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $isUpdated = TodoModel::where('id', $id)->update(['name' => $request->todo]);
+
+        if($isUpdated)  {
+          return response()->json(['status' => 's', 'message' => 'Todo updated successfully!!!']);
+        }else{
+          return response()->json(['status' => 'e', 'message' => 'Something looks wrong!!!']);
+        } 
     }
 
     /**
