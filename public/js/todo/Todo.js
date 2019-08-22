@@ -26869,8 +26869,9 @@ function _setPrototypeOf(o, p) {
 
 
 
+ //const baseUrl = 'http://localhost/todo_react/public';
 
-var baseUrl = 'http://localhost/todo_react/public';
+var baseUrl = 'http://localhost:3000/todo_react/public';
 
 var Todo =
 /*#__PURE__*/
@@ -26916,32 +26917,18 @@ function (_Component) {
   }, {
     key: "handleUpdateForm",
     value: function handleUpdateForm(id, todo) {
-      var _this2 = this;
-
-      var url = "".concat(baseUrl, "/todos/").concat(id);
-      axios__WEBPACK_IMPORTED_MODULE_4___default.a.put(url, {
-        todo: todo
-      }).then(function (response) {
-        return response.data;
-      }).then(function (data) {
-        alert(data.message);
-
-        if (data.status === 's') {
-          //this.setState({ value: '' });
-          _this2.getTodoList();
-        }
-      });
+      this.updateTodo(id, todo);
     }
   }, {
     key: "getTodoList",
     value: function getTodoList() {
-      var _this3 = this;
+      var _this2 = this;
 
       var url = "".concat(baseUrl, "/todos");
       axios__WEBPACK_IMPORTED_MODULE_4___default.a.get(url).then(function (response) {
         return response.data;
       }).then(function (data) {
-        _this3.setState({
+        _this2.setState({
           todoList: data.data
         });
       });
@@ -26949,12 +26936,32 @@ function (_Component) {
   }, {
     key: "addTodo",
     value: function addTodo(todo) {
-      var _this4 = this;
+      var _this3 = this;
 
       var url = "".concat(baseUrl, "/todos");
       axios__WEBPACK_IMPORTED_MODULE_4___default.a.post(url, {
         todo: todo
       }).then(function (response) {
+        return response.data;
+      }).then(function (data) {
+        alert(data.message);
+
+        if (data.status === 's') {
+          _this3.setState({
+            value: ''
+          });
+
+          _this3.getTodoList();
+        }
+      });
+    }
+  }, {
+    key: "deleteTodo",
+    value: function deleteTodo(todoId) {
+      var _this4 = this;
+
+      var url = "".concat(baseUrl, "/todos/").concat(todoId);
+      axios__WEBPACK_IMPORTED_MODULE_4___default.a["delete"](url).then(function (response) {
         return response.data;
       }).then(function (data) {
         alert(data.message);
@@ -26969,21 +26976,20 @@ function (_Component) {
       });
     }
   }, {
-    key: "deleteTodo",
-    value: function deleteTodo(todoId) {
+    key: "updateTodo",
+    value: function updateTodo(id, todo) {
       var _this5 = this;
 
-      var url = "".concat(baseUrl, "/todos/").concat(todoId);
-      axios__WEBPACK_IMPORTED_MODULE_4___default.a["delete"](url).then(function (response) {
+      var url = "".concat(baseUrl, "/todos/").concat(id);
+      axios__WEBPACK_IMPORTED_MODULE_4___default.a.put(url, {
+        todo: todo
+      }).then(function (response) {
         return response.data;
       }).then(function (data) {
         alert(data.message);
 
         if (data.status === 's') {
-          _this5.setState({
-            value: ''
-          });
-
+          //this.setState({ value: '' });
           _this5.getTodoList();
         }
       });
@@ -27412,7 +27418,6 @@ function (_React$Component) {
 
     _classCallCheck(this, TodoListItems);
 
-    console.log('yeah');
     _this = _possibleConstructorReturn(this, _getPrototypeOf(TodoListItems).call(this, props));
     _this.state = {
       isEditMode: false
@@ -27420,7 +27425,6 @@ function (_React$Component) {
     _this.handleEdit = _this.handleEdit.bind(_assertThisInitialized(_this));
     _this.handleSave = _this.handleSave.bind(_assertThisInitialized(_this));
     _this.handleCancel = _this.handleCancel.bind(_assertThisInitialized(_this));
-    console.log(props);
     return _this;
   }
 

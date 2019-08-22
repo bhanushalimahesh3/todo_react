@@ -14,3 +14,6 @@ let mix = require('laravel-mix');
 mix.js('resources/assets/js/app.js', 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css')
    .react('resources/assets/js/components/Todo', 'public/js/todo').version();
+
+mix.browserSync('localhost/todo_react/public');
+

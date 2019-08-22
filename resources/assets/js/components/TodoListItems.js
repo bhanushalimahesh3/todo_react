@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 class TodoListItems extends React.Component
 {
   constructor(props) {
-    console.log('yeah');
+    
     super(props);
     this.state = {
       isEditMode:false
@@ -11,7 +11,7 @@ class TodoListItems extends React.Component
     this.handleEdit = this.handleEdit.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
-    console.log(props);
+   
   }
   
   handleEdit() {
@@ -31,22 +31,22 @@ class TodoListItems extends React.Component
   
   render(){
    
-   
     if(this.state.isEditMode){
        return (<tr>
       <td>{this.props.todo.id}</td>
       <td><input type="text" defaultValue={this.props.todo.name} ref="editInput"/></td>
       <td><button type="button" onClick={this.handleSave} >Save</button>  <button type="button" onClick={this.handleCancel}>Cancel</button></td>
-    </tr>);
+      </tr>);
     }else{
       return (<tr>
       <td>{this.props.todo.id}</td>
       <td>{this.props.todo.name}</td>
  <td><button type="button" onClick={this.handleEdit} >Edit</button>  <button type="button" onClick={() => this.props.handleDelete(this.props.todo.id)}>Delete</button></td>
-    </tr>);
+ </tr>);
     }
     
   }
 }
+
 
 export default TodoListItems;

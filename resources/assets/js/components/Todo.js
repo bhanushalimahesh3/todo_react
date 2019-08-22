@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
 import axios from 'axios';
-const baseUrl = 'http://localhost/todo_react/public';
+//const baseUrl = 'http://localhost/todo_react/public';
+const baseUrl = 'http://localhost:3000/todo_react/public';
 
 class Todo extends Component {
 
@@ -34,18 +35,11 @@ class Todo extends Component {
 	  this.setState({value: event.target.value});
 	}
 
-	handleUpdateForm(id, todo) {
-		
-		const url = `${baseUrl}/todos/${id}`;
-				axios.put(url, {todo:todo}).then(response => response.data)
-				.then((data) => {
-					alert(data.message);
-					if(data.status === 's') {
-				  		//this.setState({ value: '' });
-				  		this.getTodoList();				
-					}		  
-				 })
+	handleUpdateForm(id, todo) {		
+		this.updateTodo(id, todo);
 	}
+
+	
 
 
 
@@ -80,6 +74,19 @@ class Todo extends Component {
 			}		  
 		 })
 	}
+
+	updateTodo(id, todo) {
+		const url = `${baseUrl}/todos/${id}`;
+				axios.put(url, {todo:todo}).then(response => response.data)
+				.then((data) => {
+					alert(data.message);
+					if(data.status === 's') {
+				  		//this.setState({ value: '' });
+				  		this.getTodoList();				
+					}		  
+				 })	
+	}
+
 
 	componentDidMount() {
 	    this.getTodoList();

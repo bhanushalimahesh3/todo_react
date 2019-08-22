@@ -11,7 +11,7 @@ class TodoList extends Component
 
 		const Items = (this.props.todoList.length > 0) ? this.props.todoList.map( (todo, i) => {
 		    
-		     return (<TodoListItems key={todo.id} todo={todo} handleUpdateForm={this.props.handleUpdateForm} handleDelete={this.props.handleDelete}/>)
+		     return (<TodoListItems key={todo.id} todo={todo} handleUpdateForm={this.props.handleUpdateForm} handleDelete={this.props.handleDelete} />)
 		    }) : <Loading />;
 		return (
 			<table className="table">
